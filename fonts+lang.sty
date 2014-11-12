@@ -1,0 +1,34 @@
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}%
+\setmainfont[Numbers=OldStyle]{Linux Libertine O}%
+\setsansfont[Scale=MatchLowercase, Numbers=OldStyle]{Linux
+  Biolinum O}%
+\setmonofont[]{Ubuntu Mono}
+\newfontfamily\greekfont[Scale=MatchLowercase]{GFS Artemisia}
+\newfontfamily\hebrewfont[Script=Hebrew]{Ezra SIL}% or whatever
+
+%\usepackage[latin, polutonikogreek, hebrew, british]{babel}
+\usepackage{polyglossia}
+\setdefaultlanguage[]{english}
+\setotherlanguage{french}
+\setotherlanguage[variant=polytonic]{greek}% C-x RET C-\ greek-ibycus4
+% help on entering polytonic Greek: C-h C-\
+\setotherlanguage{italian}
+\setotherlanguage{hebrew}% <-- requires XeTeX
+\setotherlanguage{latin}
+
+
+%\usepackage[strict]{csquotes}% <-- clashes with Hebrew...
+\usepackage{biblatex}
+
+
+% Language-switching
+\def\grk#1{\textgreek{#1}}
+
+% Quoting commands, etc.
+
+\DeclareDocumentCommand{\qq}{smo}{\IfNoValueTF{#3}{`#2'}{`#2'#3}}
+
+
+
+\endinput

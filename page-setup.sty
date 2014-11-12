@@ -1,0 +1,82 @@
+
+\chapterstyle{dash}
+
+% Headers & Footers ==================================================
+% %% dirty hack to get sec-nums in headings, but not on the page
+% \let\oldthesubsection\thesubsection{}%
+% \renewcommand\thesubsection{}%
+% \let\oldthesection\thesection%
+% \renewcommand\thesection{}%
+% \let\oldthechapter\thechapter%
+% \renewcommand\thechapter{}%
+% \newcommand{\secheads}{%
+%            [\oldthechapter\oldthesection]}%
+
+% TMP HACK
+\def\secheads{[1.\thechapter]}
+
+
+\providecommand\thedocauthor{Jean Bodin}
+\providecommand\thedoctitle{Six Books on the Republic}
+
+\makepagestyle{bdr} %
+\aliaspagestyle{references}{bdr} %
+\makeevenhead{bdr}%
+             {\small \thepage}%
+             {\small \scshape \thedocauthor}%
+             {\small \secheads} %
+\makeoddhead{bdr}%
+            {\small \secheads}%
+            {\small \scshape \thedoctitle}%
+            {\small \thepage} %
+\makeevenfoot{bdr}{}{}{}%
+\makeoddfoot{bdr}{}{}{}%
+\pagestyle{bdr}
+
+
+\makepagestyle{chap-headers}%
+\makeevenhead{chap-headers}{}{}{}%
+\makeoddhead{chap-headers}{}{}{}%
+\makeevenfoot{chap-headers}{}{\small\bfseries \textcolor{Maroon}{\bkversion v\quad (\bkrevdate)}}{}%
+\makeoddfoot{chap-headers}{}{\small\bfseries  \textcolor{Maroon}{\bkversion v\quad (\bkrevdate)}}{}%
+
+
+
+% Footnotes ==========================================================
+\def\footnoterule{\kern-3\p@ % donald arseneau: fix floating footnotes
+   \nobreak \vfill
+   \hrule \@width 2in \kern 2.6\p@} % the \hrule is .4pt high
+
+% \setlength{\footmarkwidth}{1.5em}
+% \setlength{\footmarksep}{0em}
+% \footmarkstyle{#1.\hfill}
+\paragraphfootnotes%
+\setlength{\footmarkwidth}{0em}
+\footmarkstyle{\textbf{#1.\hspace{0.5em}}}%
+
+
+% Marginal Notes =====================================================
+\strictpagecheck
+% \sidepar
+\renewcommand{\sideparfont}{\tiny\scshape\bfseries}
+\renewcommand*{\sideparform}{% = default; maybe use RaggedRight, etc.?
+  \ifmemtortm\raggedright\else\raggedleft\fi}
+\sideparmargin{inner}
+
+
+% \newcommand{\mnote}[1]{*\marginpar{#1}}
+\newcommand\mpfont[1]{\footnotesize\itshape #1}
+\NewDocumentCommand{\mnote}{smo}
+{\IfBooleanTF{#1}%
+  {\marginpar{{\mpfont{#2}}}}%
+  {*\marginpar{{\mpfont{*\,#2}}}}%
+  \IfValueT{#3}{\footnotetext{#3}}%
+}
+
+\newcommand*{\page}[1]{%
+  \unskip
+  \sidepar{|\,#1\,|}} % <-- use 79A, etc.
+%\newcommand*{\pgformat}[1]{\textsc{\textbf{#1}}}
+
+
+\endinput

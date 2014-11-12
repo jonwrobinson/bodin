@@ -1,0 +1,38 @@
+
+
+
+% Editing / 'todo' commands
+\ifxetex
+  % \renewcommand{\textlangle}{‹}% ‹ (= C-x 8 RET 2039)
+  % \renewcommand{\textrangle}{›}% › (= C-x 8 RET 203a)
+  \def\textlangle{⟨}% ‹ (= C-x 8 RET 27e8)
+  \def\textrangle{⟩}% › (= C-x 8 RET 27e9)
+  \let\otla\textlangle% ⟨⟩
+  \let\otra\textrangle%
+\else
+  \let\otla\textlangle%
+  \let\otra\textrangle%
+  % requires TS1 encoding...
+  \renewcommand{\textlangle}{{\fontfamily{lmr}\selectfont\otla}}%
+  \renewcommand{\textrangle}{{\fontfamily{lmr}\selectfont\otra}}%
+\fi
+
+\providecommand{\emend}[1]{\textlangle #1\textrangle}
+\ifxetex
+\renewcommand{\emend}[1]{%
+  {\fontspec{Linux Libertine O}\otla}%
+  #1%
+  {\fontspec{Linux Libertine O}\otra}% <-- requires textcomp
+}%
+\else
+\fi
+
+
+\newcommand*{\additio}[1]{[#1]}
+
+
+\newcommand{\CHECK}[1]{\textcolor{OrangeRed}{\textbf{#1}}}%
+
+
+
+\endinput

@@ -1,0 +1,106 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{terminology}
+  [2012/02/21 v0.02 Generic terminology commands]
+
+% Requirements:
+% * babel.sty with at least option 'latin'
+
+\NewDocumentCommand{\l@term} {momo}
+{% for "legal" terms
+  \IfNoValueTF{#2}
+  {% If no optional arguments, use #1 & #3
+    \expandafter\def\csname#1\endcsname{%
+    \p@col{#3}%
+    }%
+  }%
+  {% TODO: capture optional arguments for indexing, etc.; add '*'
+   % option to suppress indexing for compount terms...
+    \expandafter\def\csname#1\endcsname{%
+    \p@col{#3}%
+    }%
+  }%
+}
+
+\newcommand{\latinterm}[1]{%
+  \foreignlanguage{latin}{\emph{#1}}}
+\newcommand{\p@col}[1]{%
+  \ifbool{proof}{\textcolor{red}{#1}}{#1}}
+
+\newcommand{\lemph}[1]{\latinterm{#1}}
+
+\NewDocumentCommand {\platin} {sm}
+{\IfBooleanTF{#1}%
+  {[\latinterm{#2}]}%
+  {(\latinterm{#2})}%
+}
+
+\newcommand{\FIX}[1]{\textcolor{orange}{#1}}
+
+
+
+% terminology --------------------------------------------------------
+
+\l@term{commissarius}{commissioner}
+\l@term{concedere}{grant}
+\l@term{concederi}[concedere]{granted}[grant]
+\l@term{concessum}[grant]{granted}[grant]
+\l@term{consulatum}{consulship}
+\l@term{curatio}{commission}
+\l@term{curationes}[curatio]{commissions}[commission]
+\l@term{curator}[curator]{supervisor}
+\l@term{curatores}[curator]{supervisors}[supervisor]
+\l@term{custodes}{guardians}
+\l@term{dictator}{dictator}
+\l@term{Dictator}[dictator]{Dictator}[dictator]
+\l@term{Dictatores}[dictator]{Dictators}[dictator]
+\l@term{dictatura}{dictatorship}
+\l@term{gubernatio}{guiding}%
+\l@term{imperium}{\emph{imperium}}
+\l@term{iudex}{judge}
+\l@term{Iudex}[iudex]{Judge}[judge]
+\l@term{iurisdictio}{jurisdiction}
+\l@term{iura}[ius]{rights}[right]
+\l@term{ius}{right}
+\l@term{Ius}[ius]{Right}[right]
+\l@term{iuslaw}[ius (law)]{law \emph{ius}}[ius (law)]
+\l@term{lex}{law}
+\l@term{leges}[lex]{laws}[law]
+\l@term{libertas}{liberty}
+\l@term{magister}{master}
+\l@term{magistri}[magister]{masters}[master]
+\l@term{magistratus}{magistrate}
+\l@term{magistratuspl}[magistratus]{magistrates}[magistrate]
+\l@term{maiestas}{majesty}
+\l@term{Maiestas}{Majesty}
+\l@term{plebs}{people (\emph{plebs})}
+\l@term{populus}{people}
+\l@term{potestas}{power}
+\l@term{praeesse}{in charge}[in charge, to be]%
+\l@term{princeps}{prince}
+\l@term{principes}[princeps]{princes}[prince]
+\l@term{procurator}{procurator}
+\l@term{regnum}{kingdom}
+\l@term{respublica}{republic}
+\l@term{Respublica}{Republic}
+\l@term{rex}{king}
+\l@term{tyrannis}{tyranny}
+
+
+% compound terms -----------------------------------------------------
+\NewDocumentCommand{\l@cterm} {mm}
+{%
+   \expandafter\def\csname#1\endcsname{%
+    \p@col{#2}%
+}}
+
+\l@cterm{iuramaiestatis}{\iura\ of \maiestas}
+\l@cterm{iusmaiestatis}{\ius\ of \maiestas}
+\l@cterm{maiusimperium}{fuller authority}
+\l@cterm{sumpot}{highest \potestas}
+\l@cterm{sumius}{highest \ius}
+
+
+
+
+
+\endinput
