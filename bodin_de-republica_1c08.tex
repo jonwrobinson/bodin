@@ -14,6 +14,14 @@
 \usepackage{xparse}
 
 
+% Git :: gitinfo2 ====================================================
+
+\usepackage[mark]{gitinfo2}%
+\renewcommand*{\gitMark}{Branch: \gitBranch\,@\,\gitAbbrevHash{}
+  (\gitAuthorDate)}%
+\renewcommand*{\gitMarkFormat}{\color{gray}\footnotesize\ttfamily}
+
+
 % My packages ========================================================
 \usepackage{fonts+lang}
 \usepackage{commands-generic}
@@ -23,6 +31,16 @@
 
 
 \begin{document}% ====================================================
+
+% \gitReferences\quad
+% \gitBranch\quad
+% \gitDirty\quad
+\gitAbbrevHash\quad
+% \gitAuthorName\quad
+\gitAuthorDate\quad
+
+\gitTags
+
 
 \setcounter{chapter}{7}
 \chapter{On the Right of Majesty}

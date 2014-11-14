@@ -6,6 +6,8 @@
      "page-setup"
      "commands-generic"
      "fonts+lang"
+     "gitinfo2"
+     "mark"
      "xparse"
      "xcolor"
      "svgnames"
