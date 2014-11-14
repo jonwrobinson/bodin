@@ -10,8 +10,8 @@ THETEX=bodin_de-republica_1c08.tex
 # 2. commit .tex file
 
 git add .                           &&
-git commit -m 'TeX commit: $(date)' &&
+git commit -m 'TeX commit: (date)' &&
 git checkout $THEPDF                &&
 #xelatex $THETEX                     &&
-git commit -m 'PDF commit: $(date)' &&
+git commit -m 'PDF commit: (date)' &&
 git push origin master
