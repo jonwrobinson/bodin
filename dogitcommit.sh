@@ -11,6 +11,7 @@ THETEX=bodin_de-republica_1c08.tex
 
 git add .                           &&
 git commit -m 'TeX commit: (date)' &&
+git tag $THETEX
 git checkout $THEPDF                &&
 xelatex $THETEX                     &&
 git commit -m 'PDF commit: (date)' &&
