@@ -1,0 +1,1161 @@
+%	$Id: texts-law.sty,v 1.4 2013/06/21 18:07:37 jon Exp jon $
+%% This package contains the macros for various (medieval) legal texts
+%%
+%%
+\ProvidesPackage{texts-law}[2011/08/03 v1.1]
+\NeedsTeXFormat{LaTeX2e}[2001/06/01]
+
+
+%% Required packages:
+%% * babel.sty
+%% * csquotes.sty, csquotes.cfg
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+%\RequirePackage{imakeidx}
+
+
+
+
+%%% TODO: FIX
+\providecommand{\glit}[1]{\textit{#1}}% <-- incorporate into gloss/law commands!
+\providecommand{\fnote}[2]{#2\textsuperscript{#1}}% for 3n39 in index
+\providecommand{\itfnote}[2]{{\itshape#2\textsuperscript{#1}}}% for {\it 3n39} in index; glossa
+
+
+% Package commands: language =========================================
+\newcommand{\law@lat}[1]{\foreignlanguage{latin}{#1}}
+\newcommand{\law@ilat}[1]{\foreignlanguage{latin}{\emph{#1}}}
+\newcommand{\law@qlat}[1]{\foreignquote{latin}{\emph{#1}}}
+
+
+% Package commands: language: switches -------------------------------
+\providebool{ampunc}
+\NewDocumentCommand {\glsv} { m o }% the "(s.)v." command for glossa
+{\ifbool{ampunc}%
+   {\IfNoValueTF {#2}
+    {v.\ \enquote{#1}}%
+    {v.\ \enquote{#1#2}}%
+   }%
+   {\IfNoValueTF {#2}%
+    {v.\ \enquote{#1}}%
+    {v.\ \enquote{#1}#2}%
+   }%
+}
+
+
+% Package commands: whitespace ---------------------------------------
+%
+% law@lpts = add  low-penalty thin space
+% law@hpts = add high-penalty thin space
+% law@ts   = add thin space
+
+\newrobustcmd*{\law@lpts}{%
+  \unspace
+  \penalty\value{lownamepenalty}%
+  \hskip0.16667em\relax}
+
+\newrobustcmd*{\law@hpts}{%
+  \unspace
+  \penalty\value{highnamepenalty}%
+  \hskip0.16667em\relax}
+
+\newcounter{jwrhyphenpenalty}
+\defcounter{jwrhyphenpenalty}{\hyphenpenalty/2}% etoolbox
+\newrobustcmd*{\law@ts}{%
+  \unspace
+  \penalty\value{jwrhyphenpenalty}%
+  \hskip0.16667em\relax}
+
+
+
+% TEXTS ==============================================================
+%% Basic principles
+%% * \hl<cmd>  ==  a 'headless' citation: omits title
+%% * \no<cmd>  ==  a 'tailless' citation: omits work's divisions
+
+%%  Law --- generic technical vocabular, etc.
+\newcommand{\canon}[1]{\law@lat{\emph{#1}}}%
+\newcommand{\capit}[1]{c.\law@ts #1}%
+\newcommand{\capitulum}{\law@lat{\emph{capitulum}}}%
+\newcommand{\capitula}{\law@lat{\emph{capitula}}}%
+\newcommand{\incip}[1]{l.\law@ts \law@ilat{#1}}
+\newcommand{\sv}[2][]{s.v.\ \law@qlat{#2#1}}%
+\newcommand{\svv}[3][]{s.vv.\ \law@qlat{#2} and
+  \law@qlat{#3#1}}%
+\newcommand{\svvv}[4][]{s.vv.\ \law@qlat{#2};
+  \law@qlat{#3}; \law@qlat{#4#1}}%
+
+%% Ius commune titles  ===============================================
+\newcommand{\iuscommune}{\law@ilat{ius commune}}%
+\newcommand{\librifeud}{\law@itlat{Libri feudorum}}%
+
+
+% Canon law titles ---------------------------------------------------
+\newcommand{\cican}[1]{CICan.\ #1\nocite{friedberg1879}}%
+\newcommand{\corpuscanon}{\law@ilat{Corpus iuris canonici}}%
+\newcommand{\decretales}{\law@ilat{Decretales}}%
+\newcommand{\decretum}{\law@ilat{Decretum}}%
+\newcommand{\liberextra}{\law@ilat{Liber extra}}%
+\newcommand{\libersextus}{\law@ilat{Liber sextus}}%
+
+
+% Roman law titles ---------------------------------------------------
+\newcommand{\authentica}{\law@ilat{authentica}}
+\newcommand{\authenticae}{\law@ilat{authenticae}}%
+\newcommand{\authenticum}{\law@ilat{Authenticum}}%
+\newcommand{\ciciv}[1]{CICiv.\ #1\nocite{krueger1966}}%
+\newcommand{\corpuscivilis}{\law@ilat{Corpus iuris civilis}}%
+\newcommand{\code}{\emph{Code}}%
+\newcommand{\codex}{\emph{Codex}}%
+\newcommand{\digest}{\law@lat{\emph{Digest}}}%
+\newcommand{\digestum}{\law@lat{\emph{Digesta}}}%
+\newcommand{\institutes}{\law@lat{\emph{Institutes}}}%
+\newcommand{\institutiones}{\law@lat{\emph{Institutiones}}}%
+\newcommand{\novels}{\emph{Novellae}}%
+
+
+% Use English Names for titles..? ------------------------------------
+\newif\ifCICivEnglish
+
+\CICivEnglishtrue
+% \CICivEnglishfalse
+
+\ifCICivEnglish
+  \renewcommand{\code}{\emph{Code}}%
+  \renewcommand{\codex}{\emph{Code}}%
+  \renewcommand{\digest}{\emph{Digest}}%
+  \renewcommand{\digestum}{\emph{Digest}}%
+  \renewcommand{\institutes}{\emph{Institutes}}%
+  \renewcommand{\institutiones}{\emph{Institutes}}%
+  \renewcommand{\novels}{\emph{Novels}}%
+\else
+  \renewcommand{\code}{\emph{Codex}}%
+  \renewcommand{\codex}{\emph{Codex}}%
+  \renewcommand{\digest}{\emph{Digesta}}%
+  \renewcommand{\digestum}{\emph{Digesta}}%
+  \renewcommand{\institutes}{\emph{Institutiones}}%
+  \renewcommand{\institutiones}{\emph{Institutiones}}%
+  \renewcommand{\novels}{\emph{Novellae leges}}%
+\fi
+
+
+% Early modern editions ==============================================
+% use: city+year: Mainz 1472 == malxii
+
+\newcommand{\cpdelim}{,\space}% city-publisher delim
+
+% Lyons == lyo
+\def\lyolxiv{Lyons\cpdelim 1564}
+\def\lyoxcix{Lyons\cpdelim 1498}
+
+% Nuremburg == nur
+\def\nurlxxxi{Nuremberg\cpdelim 1472}
+
+% Mainz == mai
+\def\mailxxii{Mainz\cpdelim 1472}
+
+% Milan == mil
+\def\milxc{Milan\cpdelim 1490}
+
+% Pavia == pav
+\def\pavlxxvi{Pavia\cpdelim 1476}
+
+% Perugia == per
+\def\perlxxvi{Perugia\cpdelim 1476}
+
+% Venice == ve
+\def\velxxi  {Venice\cpdelim 1471}
+\def\velxxii {Venice\cpdelim 1472}
+\def\velxxvi {Venice\cpdelim 1476}
+\def\velxxvii{Venice\cpdelim 1477}
+\def\velxxviii{Venice\cpdelim 1478}
+\def\velxxviiiix{Venice\cpdelim 1478/79}%
+\def\velxxix {Venice\cpdelim 1479}
+\def\vexc    {Venice\cpdelim 1490}
+\def\vexciv  {Venice\cpdelim 1494}
+\def\vexcvi  {Venice\cpdelim 1496}
+\def\vemdxcix{Venice\cpdelim 1599}
+
+
+% Glossa ordinaria -- generic ========================================
+\newcommand{\glosord}{% for use in \gl* commands
+  \emph{Glos.\ ord.\@}}%
+\newcommand{\gl}[3][]{\emph{Glos.\ ord.\@} ad #2, s.v.\
+  \enquote{\law@lat{#3}#1}\mancite}%
+\newcommand{\glcasus}[2][]{\emph{Glos.\ ord.\@} ad #2
+  (\law@lat{Casus})#1\mancite}%  Casus vs Casum..?
+\newcommand{\glossa}{\law@lat{\emph{Glossa ordinaria}}}%
+\newcommand{\glrubric}[2]{\emph{Glos.\ ord.\@} ad rubr.\ #1,
+   #2\mancite}%
+\newcommand{\glverb}[1]{\law@lat{\emph{#1}}}% incipit of gloss
+
+% Glossa ordinaria -- canon law
+
+% Glos. ord. ad \dist
+\NewDocumentCommand {\gldist} {s m m m O{} o}%
+% * == short form
+% form: *{22}{6}{priusquam}[22ra][,] | {22}{6}{priusquam}[,]
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#6}%
+     {% If #6 absent
+        D.\law@ts #2 c.\law@ts #3, \sv{#4}#5}%
+     {% if #6 present
+        D.\law@ts #2 c.\law@ts #3,  \sv{#4} (#6)#5}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#6}%
+     {% If #5 absent
+       \glosord{} ad D.\law@ts #2 c.\law@ts #3, \sv{#4}#5}%
+     {% if #5 present
+       \glosord{} ad D.\law@ts #2 c.\law@ts #3,  \sv{#4} (#6)#5}%
+  }%
+}
+
+% Glos. ord. ad \dista
+\NewDocumentCommand {\gldista} {s m m m O{} o}%
+% * == short form
+% form: *{22}{6}{priusquam}[22ra][,] | {22}{6}{priusquam}[,]
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#6}%
+     {% If #6 absent
+        D.\law@ts #2 d.a.c.\law@ts #3, \sv{#4}#5}%
+     {% if #6 present
+        D.\law@ts #2 d.a.c.\law@ts #3,  \sv{#4} (#6)#5}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#6}%
+     {% If #5 absent
+       \glosord{} ad D.\law@ts #2 d.a.c.\law@ts #3, \sv{#4}#5}%
+     {% if #5 present
+       \glosord{} ad D.\law@ts #2 d.a.c.\law@ts #3,  \sv{#4} (#6)#5}%
+  }%
+}
+
+% Glos. ord. ad \distp
+\NewDocumentCommand {\gldistp} {s m m m O{} o}%
+% * == short form
+% form: *{22}{6}{priusquam}[22ra][,] | {22}{6}{priusquam}[,]
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#6}%
+     {% If #6 absent
+        D.\law@ts #2 d.p.c.\law@ts #3, \sv{#4}#5}%
+     {% if #6 present
+        D.\law@ts #2 d.p.c.\law@ts #3,  \sv{#4} (#6)#5}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#6}%
+     {% If #5 absent
+       \glosord{} ad D.\law@ts #2 d.p.c.\law@ts #3, \sv{#4}#5}%
+     {% if #5 present
+       \glosord{} ad D.\law@ts #2 d.p.c.\law@ts #3,  \sv{#4} (#6)#5}%
+  }%
+}
+
+
+% Glos. ord. ad \causa
+\NewDocumentCommand {\glcausa} {s m m m m O{} o}%
+% * == short form
+% form: *{12}{1}{2}{dilectissimis}[220ra][,] | {22}{6}{priusquam}[,]
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#7}%
+     {% If #6 absent
+       C.\law@ts #2 q.\law@ts #3 c.\law@ts #4, \sv{#5}#6}%
+     {% if #6 present
+       C.\law@ts #2 q.\law@ts #3 c.\law@ts #4, \sv{#5} (#7)#6}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#7}%
+     {% If #6 absent
+       \glosord{} ad C.\law@ts #2 q.\law@ts #3 c.\law@ts #4, \sv{#5}#6}%
+     {% if #6 present
+       \glosord{} ad C.\law@ts #2 q.\law@ts #3 c.\law@ts #4, \sv{#5} (#7)#6}%
+  }%
+}
+
+% Glos. ord. ad  \causaa
+\NewDocumentCommand {\glcausaa} {s m m m m O{} o}%
+% * == short form
+% form: *{12}{1}{2}{dilectissimis}[220ra][,] | {22}{6}{priusquam}[,]
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#7}%
+     {% If #6 absent
+       C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4, \sv{#5}#6}%
+     {% if #6 present
+       C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4, \sv{#5} (#7)#6}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#7}%
+     {% If #6 absent
+       \glosord{} ad C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4, \sv{#5}#6}%
+     {% if #6 present
+       \glosord{} ad C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4, \sv{#5} (#7)#6}%
+  }%
+}
+
+% Glos. ord. ad  \causap
+\NewDocumentCommand {\glcausap} {s m m m m O{} o}%
+% * == short form
+% form: *{12}{1}{2}{dilectissimis}[,][220ra] | {22}{6}{priusquam}[,]
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#7}%
+     {% If #6 absent
+       C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4, \sv{#5}#6}%
+     {% if #6 present
+       C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4, \sv{#5} (#7)#6}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#7}%
+     {% If #6 absent
+       \glosord{} ad C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4, \sv{#5}#6}%
+     {% if #6 present
+       \glosord{} ad C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4, \sv{#5} (#7)#6}%
+  }%
+}
+
+
+\NewDocumentCommand {\gllextra} {s m m O{} o}%
+% * == abbreviated version
+% form: *{1.2.2}{culpa caret}[:][10va] | {1.2.2}{culpa caret}
+ {\IfBooleanTF {#1}%
+   {% If #1 present:
+     \IfNoValueTF {#5}%
+     {% If #6 absent
+       X\law@ts #2, \sv{#3}#4}%
+     {% if #6 present
+       X\law@ts #2, \sv{#3} (#5)#4}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#5}%
+     {% If #6 absent
+       \glosord{} ad X\law@ts #2, \sv{#3}#4}%
+     {% if #6 present
+       \glosord{} ad X\law@ts #2, \sv{#3} (#5)#4}%
+  }%
+}
+
+\NewDocumentCommand {\glsext} {s m m O{} o}%
+% * == abbreviated version
+% form: *{1.2.2}{culpa caret}[:][10va] | {1.2.2}{culpa caret}
+ {\IfBooleanTF {#1}%
+   {% If #1 present:
+     \IfNoValueTF {#5}%
+     {% If #6 absent
+       VI\law@ts #2, \sv{#3}#4}%
+     {% if #6 present
+       VI\law@ts #2, \sv{#3} (#5)#4}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#5}%
+     {% If #6 absent
+       \glosord{} ad VI\law@ts #2, \sv{#3}#4}%
+     {% if #6 present
+       \glosord{} ad VI\law@ts #2, \sv{#3} (#5)#4}%
+  }%
+}
+
+
+\NewDocumentCommand {\glsextreg} {s m m O{} o}%
+% * == abbreviated version
+% form: *{1.2.2}{culpa caret}[:][10va] | {1.2.2}{culpa caret}
+ {\IfBooleanTF {#1}%
+   {% If #1 present:
+     \IfNoValueTF {#5}%
+     {% If #6 absent
+       VI\law@ts 5.13 reg.\ #2, \sv{#3}#4}%
+     {% if #6 present
+       VI\law@ts 5.13 reg.\ #2, \sv{#3} (#5)#4}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#5}%
+     {% If #6 absent
+       \glosord{} ad VI\law@ts 5.13 reg.\ #2, \sv{#3}#4}%
+     {% if #6 present
+       \glosord{} ad VI\law@ts 5.13 reg.\ #2, \sv{#3} (#5)#4}%
+  }%
+}
+
+
+
+% Glossa ordinaria -- roman law
+% \newcommand{\glcod}[3][]{\emph{Glos.\ ord.\@} ad Cod.\law@ts #2, s.v.\
+%   \enquote{\law@lat{#3}#1}\mancite}%
+% \newcommand{\gldig}[3][]{\emph{Glos.\ ord.\@} ad Dig.\law@ts #2, s.v.\
+%   \enquote{\law@lat{#3}#1}\mancite}%
+% \newcommand{\glinst}[3][]{\emph{Glos.\ ord.\@} ad Inst.\law@ts #2, s.v.\
+%   \enquote{\law@lat{#3}#1}\mancite}%
+
+
+\NewDocumentCommand {\glcod} { s m m O{} o }
+% * = unused ; #2 = cod. ; #3 = sv ; #4 = punct ; #5 = folio
+{\IfBooleanTF {#1}%
+  {\IfNoValueTF {#5}%
+   {\glosord{} ad Cod.\law@ts #2, \glsv{#3}[#4]}%
+   {\glosord{} ad Cod.\law@ts #2, \glsv{#3}[#4] (#5)}%
+ }%
+  {\IfNoValueTF {#5}%
+   {\glosord{} ad Cod.\law@ts #2, \glsv{#3}[#4]}%
+   {\glosord{} ad Cod.\law@ts #2, \glsv{#3}[#4] (#5)}%
+ }%
+}
+
+\NewDocumentCommand {\gldig} { s m m O{} o }
+% * = unused ; #2 = dig. ; #3 = sv ; #4 = punct ; #5 = folio
+{\IfBooleanTF {#1}%
+  {\IfNoValueTF {#5}%
+   {\glosord{} ad Dig.\law@ts #2, \glsv{#3}[#4]}%
+   {\glosord{} ad Dig.\law@ts #2, \glsv{#3}[#4] (#5)}%
+ }%
+  {\IfNoValueTF {#5}%
+   {\glosord{} ad Dig.\law@ts #2, \glsv{#3}[#4]}%
+   {\glosord{} ad Dig.\law@ts #2, \glsv{#3}[#4] (#5)}%
+ }%
+}
+
+\NewDocumentCommand {\glinst} { s m m O{} o }
+% * = unused ; #2 = inst. ; #3 = sv ; #4 = punct ; #5 = folio
+{\IfBooleanTF {#1}%
+  {\IfNoValueTF {#5}%
+   {\glosord{} ad Inst.\law@ts #2, \glsv{#3}[#4]}%
+   {\glosord{} ad Inst.\law@ts #2, \glsv{#3}[#4] (#5)}%
+ }%
+  {\IfNoValueTF {#5}%
+   {\glosord{} ad Inst.\law@ts #2, \glsv{#3}[#4]}%
+   {\glosord{} ad Inst.\law@ts #2, \glsv{#3}[#4] (#5)}%
+ }%
+}
+
+% --- index macros for legal sources
+% ++ for Glos. ord. prefix an asterisk ..?
+% * Canon Law [Roman]
+% * decretum gratiani [scschape]
+
+% * 01 = DISTINCTIO
+\NewDocumentCommand {\dist} {s m m o}% * == glossa ordinaria
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#4}%
+     {% If #4 absent
+       D.\law@ts #2 c.\law@ts #3%
+       \index[indexlaw]{AD#2c#3c@D.\law@ts #2 c.\law@ts #3|itfnote{\thefootnote}}}%
+     {% if #4 present
+       D.\law@ts #2 c.\law@ts #3 (1:#4)%
+       \index[indexlaw]{AD#2c#3c@D.\law@ts #2 c.\law@ts #3|itfnote{\thefootnote}}}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#4}%
+    {% If #4 absent
+      D.\law@ts #2 c.\law@ts #3\index[indexlaw]{AD#2c#3c@D.\law@ts #2
+          c.\law@ts #3|fnote{\thefootnote}}}%
+    {% if #4 present
+      D.\law@ts #2 c.\law@ts #3 (1:#4)%
+      \index[indexlaw]{AD#2c#3c@D.\law@ts #2 c.\law@ts #3|fnote{\thefootnote}}}%
+  }%
+}
+
+\NewDocumentCommand {\distcc} {s m m o}% * == glossa ordinaria
+ {\IfBooleanTF {#1}%
+   {% If #1 present
+     \IfNoValueTF {#4}%
+     {% If #4 absent
+       D.\law@ts #2 cc.\law@ts #3}%
+     {% if #4 present
+       D.\law@ts #2 cc.\law@ts #3 (1:#4)}%
+   }%
+   {% If #1 absent
+     \IfNoValueTF {#4}%
+    {% If #4 absent
+      D.\law@ts #2 cc.\law@ts #3}%
+    {% if #4 present
+      D.\law@ts #2 cc.\law@ts #3 (1:#4)}%
+  }%
+}
+
+\NewDocumentCommand {\dista} {s m m}% * == glossa ordinaria
+{\IfBooleanTF {#1}%
+  {D.\law@ts #2 d.a.c.\law@ts #3\index[indexlaw]{AD#2c#3a@D.\law@ts #2
+      d.a.c.\law@ts #3|itfnote{\thefootnote}}}%
+  {D.\law@ts #2 d.a.c.\law@ts #3\index[indexlaw]{AD#2c#3a@D.\law@ts #2
+      d.a.c.\law@ts #3|fnote{\thefootnote}}}%
+}%
+\NewDocumentCommand {\distp} {s m m}% * == glossa ordinaria
+{\IfBooleanTF {#1}%
+  {D.\law@ts #2 d.p.c.\law@ts #3\index[indexlaw]{AD#2c#3p@D.\law@ts #2
+      d.p.c.\law@ts #3|itfnote{\thefootnote}}}%
+  {D.\law@ts #2 d.p.c.\law@ts #3\index[indexlaw]{AD#2c#3p@D.\law@ts #2
+      d.p.c.\law@ts #3|fnote{\thefootnote}}}%
+}%
+\RenewDocumentCommand {\distp} {s m m o}% * == no Friedberg ref.
+{\IfNoValueTF {#4}%
+  {D.\law@ts #2 d.p.c.\law@ts #3}%
+  {D.\law@ts #2 d.p.c.\law@ts #3 (1:#4)}%
+}
+
+\newcommand{\distnoindex}[2]{D.\law@ts #1 c.\law@ts #2}%
+\newcommand{\distanoindex}[2]{D.\law@ts #1 d.a.c.\law@ts #2}%
+\newcommand{\distpnoindex}[2]{D.\law@ts #1 d.p.c.\law@ts #2}%
+
+\newcommand{\distt}[2]{% <-- 't' for in-text
+  D.\law@ts #1 c.\law@ts #2\index[indexlaw]{AD#1c#2c@D.\law@ts #1 c.\law@ts #2}}% DOES NOT CAPTURE GL. REFS
+\newcommand{\distat}[2]{D.\law@ts #1
+  d.a.c.\law@ts #2\index[indexlaw]{AD#1c#2a@D.\law@ts #1 d.a.c.\law@ts #2}}%
+\newcommand{\distpt}[2]{D.\law@ts #1
+  d.p.c.\law@ts #2\index[indexlaw]{AD#1c#2p@D.\law@ts #1 d.p.c.\law@ts #2}}%
+
+% in-text references to the Glossa ordinaria
+\newcommand{\disttgl}[2]{% <-- 't' for in-text
+  D.\law@ts #1 c.\law@ts #2\index[indexlaw]{AD#1c#2c@D.\law@ts #1 c.\law@ts #2|glit}}%
+\newcommand{\distatgl}[2]{D.\law@ts #1
+  d.a.c.\law@ts #2\index[indexlaw]{AD#1c#2a@D.\law@ts #1 d.a.c.\law@ts #2|glit}}%
+\newcommand{\distptgl}[2]{D.\law@ts #1
+  d.p.c.\law@ts #2\index[indexlaw]{AD#1c#2p@D.\law@ts #1 d.p.c.\law@ts #2|glit}}%
+
+
+\providecommand{\invisdist}[2]{\index[indexlaw]{AD#1c#2@D.\law@ts #1
+    c.\law@ts #2|fnote{\thefootnote}}}%
+\providecommand{\invisdistt}[2]{\index[indexlaw]{AD#1c#2@D.\law@ts #1
+    c.\law@ts #2}}%
+
+
+
+
+% * 02 = CAUSA
+\NewDocumentCommand {\causa} {s m m m o}%
+ {\IfBooleanTF {#1}%
+  {% If #1 present
+   \IfNoValueTF {#5}%
+    {% If #3 absent:
+     C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+%     \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+     C.\law@ts #2 q.\law@ts #3 c.\law@ts #4 (1:#5)%
+%     \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#5}%
+    {% If #5 absent:
+     C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+%     \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+     C.\law@ts #2 q.\law@ts #3 c.\law@ts #4 (1:#5)%
+%     \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+% \NewDocumentCommand {\causa} {s m m m}%
+%  {\IfBooleanTF {#1}%
+%   {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+%    \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|itfnote{\thefootnote}}}%
+%   {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+%    \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|fnote{\thefootnote}}}%
+%  }%
+\NewDocumentCommand {\causat} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|glit}}%
+  {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4}}%
+ }
+% \renewcommand{\causat}[3]{C.\law@ts #1 q.\law@ts #2 c.\law@ts #3%
+%    \index[indexlaw]{BC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 c.\law@ts #3}}%
+
+\NewDocumentCommand {\causaa} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3a#4@C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4|itfnote{\thefootnote}}}%
+  {C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3a#4@C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4|fnote{\thefootnote}}}%
+ }%
+
+% \newcommand{\causaat}[3]{C.\law@ts #1 q.\law@ts #2 d.a.c.\law@ts #3%
+%   \index[indexlaw]{BC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 d.a.c.\law@ts #3}}%
+\NewDocumentCommand {\causaat} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3a#4@C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4|glit}}%
+  {C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3a#4@C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4}}%
+ }%
+
+% \NewDocumentCommand {\causap} {s m m m}%
+%  {\IfBooleanTF {#1}%
+%   {C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+%    \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|itfnote{\thefootnote}}}%
+%   {C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+%    \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|fnote{\thefootnote}}}%
+%  }
+
+\NewDocumentCommand {\causap} {s m m m o}%
+ {\IfBooleanTF {#1}%
+  {% If #1 present
+   \IfNoValueTF {#5}%
+    {% If #5 absent:
+     C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+     \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|itfnote{\thefootnote}}%
+    }%
+    {% If #5 present:
+     C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4 (1:#5)%
+     \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#5}%
+    {% If #5 absent:
+     C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+     \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|fnote{\thefootnote}}%
+    }%
+    {% If #5 present:
+     C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4 (1:#5)%
+     \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+
+% \newcommand{\causapt}[3]{C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3%
+%   \index[indexlaw]{BC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3}}%
+\NewDocumentCommand {\causapt} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|glit}}%
+  {C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+   \index[indexlaw]{BC#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4}}%
+ }%
+
+\NewDocumentCommand {\causacc} { m m m m }
+  {C.\law@ts #1 q.\law@ts #2 cc.\law@ts #3--#4}
+
+\NewDocumentCommand {\causaq} {m m}%
+  {C.\law@ts #1 q.\law@ts #2}%
+
+
+\newcommand{\causanoindex}[3]{C.\law@ts #1 q.\law@ts #2 c.\law@ts #3}%
+\newcommand{\causaanoindex}[3]{C.\law@ts #1 q.\law@ts #2 d.a.c.\law@ts #3}%
+\newcommand{\causapnoindex}[3]{C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3}%
+
+
+%     --- 'invisible' causa-macros for indexing ---
+\newcommand{\inviscausa}[3]{% <-- only index
+   \index[indexlaw]{BC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 c.\law@ts #3|fnote{\thefootnote}}}%
+\newcommand{\inviscausap}[3]{% <-- only index the dpc reference
+   \index[indexlaw]{BC#1q#2p#3@C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3|fnote{\thefootnote}}}%
+\newcommand{\inviscausat}[3]{% only index
+   \index[indexlaw]{BC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 c.\law@ts #3}}%
+
+
+
+% * 03 = de pen   = [C. 33 q. 3]
+\newcommand{\depen}[2]{D.\law@ts #1 de pen.\ c.\law@ts #2%
+  \index[indexlaw]{BD#1c#2@D.\law@ts #1 de pen.\ c.\law@ts #2}}%
+\newcommand{\depena}[2]{D.\law@ts #1 de pen.\ d.a.c.\law@ts #2%
+  \index[indexlaw]{BD#1a#2@D.\law@ts #1 de pen.\ d.a.c.\law@ts #2}}%
+\newcommand{\depenp}[2]{D.\law@ts #1 de pen.\ d.p.c.\law@ts #2%
+  \index[indexlaw]{BD#1p#2@D.\law@ts #1 de pen.\ d.p.c.\law@ts #2}}%
+\newcommand{\depennoindex}[2]{D.\law@ts #1 de pen.\ c.\law@ts #2}%
+\newcommand{\depenanoindex}[2]{D.\law@ts #1 de pen.\ d.a.c.\law@ts #2}%
+\newcommand{\depenpnoindex}[2]{D.\law@ts #1 de pen.\ d.p.c.\law@ts #2}%
+
+
+% * 04 = CAUSAZ    > [C. 33 q. 3]
+\NewDocumentCommand {\causaz} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+   \index[indexlaw]{BZ#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|itfnote{\thefootnote}}}%
+  {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+   \index[indexlaw]{BZ#2q#3c#4@C.\law@ts #2 q.\law@ts #3 c.\law@ts #4|fnote{\thefootnote}}}%
+ }%
+\NewDocumentCommand {\causaza} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4%
+   \index[indexlaw]{BZ#2q#3a#4@C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4|itfnote{\thefootnote}}}%
+  {C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4%
+   \index[indexlaw]{BZ#2q#3a#4@C.\law@ts #2 q.\law@ts #3 d.a.c.\law@ts #4|fnote{\thefootnote}}}%
+ }%
+\NewDocumentCommand {\causazp} {s m m m}%
+ {\IfBooleanTF {#1}%
+  {C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4%
+   \index[indexlaw]{BZ#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|itfnote{\thefootnote}}}%
+  {C.\law@ts #2 q.\law@ts #3 c.\law@ts #4%
+   \index[indexlaw]{BZ#2q#3p#4@C.\law@ts #2 q.\law@ts #3 d.p.c.\law@ts #4|fnote{\thefootnote}}}%
+ }%
+\newcommand{\causazt}[3]{C.\law@ts #1 q.\law@ts #2 c.\law@ts #3%
+  \index[indexlaw]{ZC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 c.\law@ts #3}}%
+\newcommand{\causazat}[3]{C.\law@ts #1 q.\law@ts #2 d.a.c.\law@ts #3%
+  \index[indexlaw]{ZC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 d.a.c.\law@ts #3}}%
+\newcommand{\causazpt}[3]{C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3%
+  \index[indexlaw]{ZC#1q#2c#3@C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3}}
+\newcommand{\causaznoindex}[3]{C.\law@ts #1 q.\law@ts #2 c.\law@ts #3}% <-- for > C. 33 q. 3
+\newcommand{\inviscausaznoindex}[3]{}%                <-- for > C. 33 q. 3
+\newcommand{\causazanoindex}[3]{C.\law@ts #1 q.\law@ts #2 d.a.c.\law@ts #3}% <-- for > C. 33 q. 3
+\newcommand{\causazpnoindex}[3]{C.\law@ts #1 q.\law@ts #2 d.p.c.\law@ts #3}% <-- for > C. 33 q. 3
+
+% * 05 = DE CONS.
+\NewDocumentCommand {\decons} {s m m}%
+ {\IfBooleanTF {#1}%
+  {D.\law@ts #2 de cons.\ c.\law@ts #3%
+   \index[indexlaw]{ED#2c#3@D.\law@ts #2 de cons.\ c.\law@ts #3|itfnote{\thefootnote}}}%
+  {D.\law@ts #2 de cons.\ c.\law@ts #3%
+   \index[indexlaw]{ED#2c#3@D.\law@ts #2 de cons.\ c.\law@ts #3|fnote{\thefootnote}}}%
+ }%
+\NewDocumentCommand {\deconst} {s m m}%
+ {\IfBooleanTF {#1}%
+  {D.\law@ts #2 de cons.\ c.\law@ts #3%
+   \index[indexlaw]{ED#2c#3@D.\law@ts #2 de cons.\ c.\law@ts #3}}%
+  {D.\law@ts #2 de cons.\ c.\law@ts #3%
+   \index[indexlaw]{ED#2c#3@D.\law@ts #2 de cons.\ c.\law@ts #3}}%
+ }%
+
+\newcommand{\deconsa}[2]{D.\law@ts #1 de cons.\ d.a.c.\law@ts #2%
+  \index[indexlaw]{ED#1a#2@D.\law@ts #1 de cons.\ d.a.c.\law@ts #2}}%
+\newcommand{\deconsp}[2]{D.\law@ts #1 de cons.\ d.p.c.\law@ts #2%
+  \index[indexlaw]{ED#1p#2@D.\law@ts #1 de cons.\ d.p.c.\law@ts #2}}%
+\newcommand{\deconsnoindex}[2]{D.\law@ts #1 de cons.\ c.\law@ts #2}%
+\newcommand{\deconsanoindex}[2]{D.\law@ts #1 de cons.\ d.a.c.\law@ts #2}%
+\newcommand{\deconspnoindex}[2]{D.\law@ts #1 de cons.\ d.p.c.\law@ts #2}%
+
+
+% * DECRETALES GREGORII IX [SC]
+% * 06 = LIBER EXTRA
+\NewDocumentCommand {\lextra} {s m o}%
+ {\IfBooleanTF {#1}%
+  {% If #1 present
+    \IfNoValueTF {#3}%
+    {% if #3 absent
+      X\law@ts \-#2
+      \index[indexlaw]{F#2@X\law@ts #2|itfnote{\thefootnote}}}%
+    {% If #3 present
+      X\law@ts \-#2, (2:#3)%
+      \index[indexlaw]{F#2@X\law@ts #2|itfnote{\thefootnote}}}%
+  }%
+  {% If #1 absent
+    \IfNoValueTF {#3}%
+    {% if #3 absent
+      X\law@ts \-#2%
+      \index[indexlaw]{F#2@X\law@ts #2|fnote{\thefootnote}}}%
+    {% if #3 present
+      X\law@ts \-#2 (2:#3)%
+      \index[indexlaw]{F#2@X\law@ts #2|fnote{\thefootnote}}}%
+  }%
+ }
+
+\NewDocumentCommand {\hllextra} {s m}%
+ {\IfBooleanTF {#1}%
+  {#2%
+   \index[indexlaw]{F#2@X\law@ts #2|itfnote{\thefootnote}}}%
+  {#2%
+   \index[indexlaw]{F#2@X\law@ts #2|fnote{\thefootnote}}}%
+ }%
+\newcommand{\lextranoindex}[1]{X\law@ts #1}%
+\newcommand{\lextrat}[1]{X\law@ts #1\index[indexlaw]{F#1@X\law@ts #1}}%
+\newcommand{\hllextrat}[1]{#1\index[indexlaw]{F#1@X\law@ts #1}}%
+\newcommand{\nolextra}{Extra}%
+
+
+% * 07 = LIBER SEXTUS
+
+\NewDocumentCommand {\sext} {s m o}%
+{\IfBooleanTF {#1}%
+  {% If #1 present
+    \IfNoValueTF {#3}%
+    {% if #3 absent
+star      VI\law@ts #2%
+      \index[indexlaw]{G#2@VI\law@ts #2|itfnote{\thefootnote}}}%
+    {% If #3 present
+star      VI\law@ts #2 (2:#3)%
+      \index[indexlaw]{G#2@VI\law@ts #2|itfnote{\thefootnote}}}%
+  }%
+  {% If #1 absent
+    \IfNoValueTF {#3}%
+    {% if #3 absent
+      VI\law@ts #2%
+      \index[indexlaw]{G#2@VI\law@ts #2|fnote{\thefootnote}}}%
+    {% If #3 present
+      VI\law@ts #2 (2:#3)%
+          \index[indexlaw]{G#2@VI\law@ts #2|itfnote{\thefootnote}}}%
+  }%
+}
+
+\NewDocumentCommand {\sextreg} {s m o}%
+{\IfBooleanTF {#1}%
+  {% If #1 present
+    \IfNoValueTF {#3}%
+    {% if #3 absent
+      VI\law@ts 5.13.\ reg.\law@ts #2%
+      \index[indexlaw]{Greg#2@VI\law@ts 5.13.\law@ts #2|itfnote{\thefootnote}}}%
+     {% if #3 present
+       VI\law@ts 5.13.\ reg.\law@ts #2 (2:#3)%
+       \index[indexlaw]{Greg#2@VI\law@ts 5.13.\law@ts #2|itfnote{\thefootnote}}}%
+  }%
+  {% If #1 present
+    \IfNoValueTF {#3}%
+    {% if #3 absent
+      VI\law@ts 5.13.\ reg.\law@ts #2%
+      \index[indexlaw]{Greg#2@VI\law@ts 5.13.\law@ts #2|fnote{\thefootnote}}}%
+     {% if #3 present
+       VI\law@ts 5.13.\ reg.\law@ts #2 (2:#3)%
+       \index[indexlaw]{Greg#2@VI\law@ts 5.13.\law@ts #2|fnote{\thefootnote}}}%
+  }%
+}
+
+\newcommand{\sextt}[1]{VI\law@ts #1\index[indexlaw]{G#1@VI\law@ts #1}}%
+\newcommand{\sextregt}[1]{VI\law@ts 5.13\law@ts \law@ts #1%
+  \index[indexlaw]{Greg#1@VI\law@ts 5.13\law@ts reg.\law@ts #1}}%
+\newcommand{\sextnoindex}[1]{VI\law@ts #1}%
+
+
+
+% * 08 = CONSTITUTIONES CLEMENTINAE
+\newcommand{\clemnoindex}[1]{Clem.\law@ts #1}%
+
+\NewDocumentCommand {\clem} {s m}%
+{\IfBooleanTF {#1}%
+  {Clem.\law@ts #2%
+    \index[indexlaw]{H#2@Clem.\law@ts #2|itfnote{\thefootnote}}}%
+  {Clem.\law@ts #2%
+    \index[indexlaw]{H#2@Clem.\law@ts #2|fnote{\thefootnote}}}%
+}%
+
+% * 09 = EXTRAVAGANTES IOHANNIS XXII
+
+
+% COMPILATIONES QUINQUE
+
+\NewDocumentCommand {\compi} { m o }
+{\IfNoValueTF {#2}%
+  {1 Comp.\@ #1}%
+  {1 Comp.\@ #1 (#2)}%
+}
+
+\NewDocumentCommand {\compii} { m o }
+{\IfNoValueTF {#2}%
+  {2 Comp.\@ #1}%
+  {2 Comp.\@ #1 (#2)}%
+}
+
+\NewDocumentCommand {\compiii} { m o }
+{\IfNoValueTF {#2}%
+  {3 Comp.\  #1}%
+  {3 Comp.\  #1 (#2)}%
+}
+
+\NewDocumentCommand {\compiv} { m o }
+{\IfNoValueTF {#2}%
+  {4 Comp.\@ #1}%
+  {4 Comp.\@ #1 (#2)}%
+}
+
+\NewDocumentCommand {\compv} { m o }
+{\IfNoValueTF {#2}%
+  {5 Comp.\@ #1}%
+  {5 Comp.\@ #1 (#2)}%
+}
+
+% ---------------------------------------------------------- ROMAN LAW
+
+% ----------------------------------------------- * 10 = INSTITUTIONES
+\NewDocumentCommand {\inst} {s m o}%
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Inst.\law@ts #2%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Inst.\law@ts #2 (1:#3)%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Inst.\law@ts #2%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Inst.\law@ts #2 (1:#3)%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+\NewDocumentCommand {\hlinst} {s m o}%
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    #2%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    #2 (1:#3)%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    #2%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    #2 (1:#3)%
+    \index[indexlaw]{J#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+\NewDocumentCommand {\invisinst} {s m}%
+ {\IfBooleanTF {#1}%
+  {\index[indexlaw]{J#2@Inst.\law@ts #2|itfnote{\thefootnote}}}%
+  {\index[indexlaw]{J#2@Inst.\law@ts #2|fnote{\thefootnote}}}%
+ }%
+
+% \newcommand{\instt}[1]{Inst.\law@ts #1\index[indexlaw]{J#1@Inst.\law@ts #1}}%
+\NewDocumentCommand {\instt} {s m}%
+ {\IfBooleanTF {#1}%
+  {Inst.\law@ts #2%
+   \index[indexlaw]{J#2@Inst.\law@ts #2|glit}}%
+  {Inst.\law@ts #2%
+   \index[indexlaw]{J#2@Inst.\law@ts #2}}%
+ }%
+
+\newcommand{\hlinstt}[1]{#1%
+  \index[indexlaw]{J#1@Inst.\law@ts #1}}%
+% \newcommand{\invisinst}[1]{\index[indexlaw]{J#1@Inst.\law@ts #1}}%
+\providecommand{\noinst}[1]{Inst.\@}% <-- unused
+\newcommand{\instnoindex}[1]{Inst.\law@ts #1}%
+
+
+% * 11 = CODEX
+\NewDocumentCommand {\cod} {s m o}%
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Cod.\law@ts #2%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Cod.\law@ts #2 (2:#3)%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Cod.\law@ts #2%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Cod.\law@ts #2 (2:#3)%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+\NewDocumentCommand {\hlcod} {s m o}%
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    #2%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    #2 (2:#3)%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    #2%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    #2 (2:#3)%
+    \index[indexlaw]{K#2@Cod.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+
+\NewDocumentCommand {\codt} {s m}% obsolte..?
+ {\IfBooleanTF {#1}%
+  {Cod.\law@ts #2%
+   \index[indexlaw]{K#2@Cod.\law@ts #2}}%
+  {Cod.\law@ts #2%
+   \index[indexlaw]{K#2@Cod.\law@ts #2}}%
+ }%
+
+\newcommand{\inviscodt}[1]{\index[indexlaw]{K#1@Cod.\law@ts #1}}%
+\newcommand{\codnoindex}[1]{Cod.\law@ts #1}%
+
+% * 12 = DIGESTUM
+\DeclareDocumentCommand {\dig} {s m o}%
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Dig.\law@ts #2%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Dig.\law@ts #2 (1:#3)%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Dig.\law@ts #2%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Dig.\law@ts #2 (1:#3)%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+\DeclareDocumentCommand {\digsq} {s m o}% square brackets
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Dig.\law@ts #2%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Dig.\law@ts #2 [1:#3]%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    Dig.\law@ts #2%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    Dig.\law@ts #2 [1:#3]%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+
+\DeclareDocumentCommand {\hldig} {s m o}%
+ {\IfBooleanTF {#1}%
+  {%
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    #2%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    #2 (1:#3)%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|itfnote{\thefootnote}}%
+    }%
+  }%
+  {% If #1 absent:
+   \IfNoValueTF {#3}%
+    {% If #3 absent:
+    #2%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+    {% If #3 present:
+    #2 (1:#3)%
+    \index[indexlaw]{L#2@Dig.\law@ts #2|fnote{\thefootnote}}%
+    }%
+  }%
+ }
+
+\NewDocumentCommand {\digt} {s m}%
+ {\IfBooleanTF {#1}%
+  {Dig.\law@ts #2%
+   \index[indexlaw]{L#2@Dig.\law@ts #2|glit}}%
+  {Dig.\law@ts #2%
+   \index[indexlaw]{L#2@Dig.\law@ts #2}}%
+ }%
+
+\newcommand{\hldigt}[1]{#1%
+  \index[indexlaw]{L#1@Dig.\law@ts #1}}%
+\newcommand{\nodig}{Dig.\@}%
+\newcommand{\dignoindex}[1]{Dig.\law@ts #1}%
+\newcommand{\hldignoindex}[1]{#1}%
+\newcommand{\invisdig}[1]{\index[indexlaw]{L#1@Dig.\law@ts #1|fnote{\thefootnote}}}%
+\newcommand{\invisdigt}[1]{\index[indexlaw]{L#1@Dig.\law@ts #1}}%
+
+% * 13 = NOVELLAE LEGES
+% \NewDocumentCommand {\novel} {s m}% <-- needs Auth. ref. addition
+%  {\IfBooleanTF {#1}%
+%   {Nov.\law@ts #2%
+%    \index[indexlaw]{M#2@Nov.\law@ts #2|itfnote{\thefootnote}}}%
+%   {Nov.\law@ts #2%
+%    \index[indexlaw]{M#2@Nov.\law@ts #2|fnote{\thefootnote}}}%
+%  }%
+
+\NewDocumentCommand {\novel} {s m o o}%
+% #1 = star (unused) ... make headless..? ; #2 = novel ; #3 = auth. ;
+% #4 = kreuger ed.
+{\IfBooleanTF {#1}%
+  {\IfNoValueTF {#4}%
+    {\IfNoValueTF {#3}% if #4, then test for #3
+      {Nov.\law@ts #2}%
+      {Nov.\law@ts #2 (= Coll.\ #3)}%
+    }%
+    {\IfNoValueTF {#3}% if #4, then test for #3
+      {Nov.\law@ts #2 (3:#4)}%
+      {Nov.\law@ts #2 (= Coll.\ #3; 3:#4)}%
+    }%
+  }%
+  {\IfNoValueTF {#4}%
+    {\IfNoValueTF {#3}% if #4, then test for #3
+      {Nov.\law@ts #2}%
+      {Nov.\law@ts #2 (= Coll.\ #3)}%
+    }%
+    {\IfNoValueTF {#3}% if #4, then test for #3
+      {Nov.\law@ts #2 (3:#4)}%
+      {Nov.\law@ts #2 (= Coll.\ #3; 3:#4)}%
+    }%
+  }%
+}
+
+
+\newcommand{\novelt}[1]{Nov.\law@ts #1%
+  \index[indexlaw]{M#1@Nov.\law@ts #1}}%
+\newcommand{\novelnoindex}[1]{Nov.\law@ts #1}%
+
+
+
+%% FEUDAL LAW / LIBRI FEUDALES
+\newcommand{\libfeud}[1]{L.F.\law@ts #1}
+
+
+%% Adding 'parenthetical' legal citations: hooks
+%% (e.g., in Latin quotations)
+%
+% paradigm: \add<book>
+
+\newcommand{\addparencitehook}[1]{%  <-- requires textcomp
+  \textlangle#1\textrangle}
+
+\newcommand{\addlextra}[1]{\addparencitehook{\lextra{#1}}}%
+
+
+
+
+
+
+
+\endinput

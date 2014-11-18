@@ -7,6 +7,7 @@
     (TeX-run-style-hooks
      "biblatex"
      "polyglossia"
+     "multicol"
      "fontspec"
      "")))
 

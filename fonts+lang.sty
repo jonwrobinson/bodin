@@ -1,4 +1,4 @@
-\usepackage{fontspec}
+\RequirePackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX}%
 \setmainfont[Numbers=OldStyle]{Linux Libertine O}%
 \setsansfont[Numbers=OldStyle]{Linux
@@ -7,8 +7,10 @@
 \newfontfamily\greekfont[Scale=MatchLowercase]{GFS Artemisia}
 \newfontfamily\hebrewfont[Script=Hebrew]{Ezra SIL}% or whatever
 
-%\usepackage[latin, polutonikogreek, hebrew, british]{babel}
-\usepackage{polyglossia}
+%\RequirePackage[latin, polutonikogreek, hebrew, british]{babel}
+
+\RequirePackage{multicol}% <-- must be loaded before bidi.sty
+\RequirePackage{polyglossia}
 \setdefaultlanguage[]{english}
 \setotherlanguage{french}
 \setotherlanguage[variant=polytonic]{greek}% C-x RET C-\ greek-ibycus4
@@ -18,8 +20,8 @@
 \setotherlanguage{latin}
 
 
-%\usepackage[strict]{csquotes}% <-- clashes with Hebrew...
-\usepackage{biblatex}
+%\RequirePackage[strict]{csquotes}% <-- clashes with Hebrew...
+\RequirePackage{biblatex}
 \addbibresource{bibliography.bib}
 
 

@@ -1,9 +1,32 @@
+\def\fileversion{0.02}
+\def\filerevdate{2014/11/17}
+%
+%
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{terminology}
-  [2012/02/21 v0.02 Generic terminology commands]
+  [\filerevdate{} v\fileversion{} Generic terminology commands]
 
 % Requirements:
 % * babel.sty with at least option 'latin'
+\RequirePackage{etoolbox}
+\RequirePackage{imakeidx}%
+  \makeindex[name=term, title=(Quasi-)Index of Terms, program=makeindex]
+  \indexsetup{level=\chapter, firstpagestyle=empty}
+
+
+
+% Colours ============================================================
+\providebool{proof}
+\ifbool{proof}{
+\definecolor{jwrblue}{cmyk}{1,    0.98, 0.1,  0.11}% == royal blue
+\definecolor{proofcol}{cmyk}{0,   0.87, 1,    0.21}
+\definecolor{jrmaroon}{cmyk}{0.3, 1,    0.99, 0.39}% == maroon
+}{
+\definecolor{proofcol}{cmyk}{0,0,0,1}
+\definecolor{jrmaroon}{cmyk}{0,0,0,1}
+}
+
+
 
 \NewDocumentCommand{\l@term} {momo}
 {% for "legal" terms
@@ -21,29 +44,135 @@
   }%
 }
 
-\newcommand{\latinterm}[1]{%
-  \foreignlanguage{latin}{\emph{#1}}}
-\newcommand{\p@col}[1]{%
-  \ifbool{proof}{\textcolor{red}{#1}}{#1}}
+% Terminology-creating macro =========================================
+%
+% MAIN MACRO:
+% - usage:
+%   \l@term{latin}[root latin]{english}[root english] %
+% - defines a \newcommand and its expansion; and writes index entry
+%   and Eng-Lat glossary
 
-\newcommand{\lemph}[1]{\latinterm{#1}}
+\DeclareDocumentCommand{\l@term} {t-momo}
+{%
+  \csdef{#2orig}{\p@col{#4}}%
+  \IfBooleanTF{#1}% if -, then, do not include in index, glossary; &
+                  % args. 3 and 5 are irrelevant
+  {%
+    \expandafter\DeclareDocumentCommand\csname#2\endcsname{so}%
+    {\IfNoValueTF{##2}%
+      {\csuse{#2orig}}%
+      {\p@col{##2}}%
+      \IfBooleanTF{##1}%
+      {\space \platin{#2}}%
+      {\relax}%
+    }%
+  }%
+  {%
+    \expandafter\DeclareDocumentCommand\csname#2\endcsname{so}%
+    {\IfNoValueTF{##2}%
+      {\csuse{#2orig}%
+        \IfNoValueTF{#3}%
+        {%
+          \IfNoValueTF{#5}% = use 4/5 & 2
+          {\index[term]{#2 (#4)}\engtolat{#4}{#2}}%
+          {\index[term]{#2 (#5)}\engtolat{#5}{#2}}%
+        }%
+        {%
+          \IfNoValueTF{#5}% = use 4/5 & 3
+          {\index[term]{#3 (#4)}\engtolat{#4}{#3}}%
+          {\index[term]{#3 (#5)}\engtolat{#5}{#3}}%
+        }%
+      }%
+      {\p@col{##2}%  ?? there is no ##3 ??
+        \IfNoValueTF{#3}%
+        {%
+          \IfNoValueTF{#5}% = use 4/5 & 2
+          {\index[term]{#2 (#4)}\engtolat{#4}{#2}}%
+          {\index[term]{#2 (#5)}\engtolat{#5}{#2}}%
+        }%
+        {%
+          \IfNoValueTF{#5}% = use 4/5 & 3
+          {\index[term]{#3 (#4)}\engtolat{#4}{#3}}%
+          {\index[term]{#3 (#5)}\engtolat{#5}{#3}}%
+        }%
+      }%
+      \IfBooleanTF{##1}%
+      {\space \platin{#2}}%
+      {\relax}%
+    }%
+  }%
+}%
+
+
+% \newcommand{\p@col}[1]{%
+%   \ifbool{proof}%
+%     {\textcolor{red}{#1}}%
+%     {#1}}
+
+\newcommand{\p@col}[1]{\textcolor{proofcol}{#1}}
+
+
+
+% Untranslated latin terms ===========================================
+
 
 \NewDocumentCommand {\platin} {sm}
 {\IfBooleanTF{#1}%
   {[\latinterm{#2}]}%
   {(\latinterm{#2})}%
 }
+\newcommand{\lemph}[1]{\latinterm{#1}}
 
+\newcommand{\latinterm}[1]{%
+  \foreignlanguage{latin}{%
+    \textcolor{proofcol}{%
+      \emph{#1}}}}
+
+
+% Things to Fix, Check, etc. =========================================
 \newcommand{\FIX}[1]{\textcolor{orange}{#1}}
 
 
 
-% terminology --------------------------------------------------------
+% English -- Latin Glossary commands =================================
+
+% Create the external file -------------------------------------------
+\newwrite\englishtolatin
+\openout\englishtolatin=\jobname.raw
+\newcommand{\engtolat}[2]{\write\englishtolatin{%
+    #1\enspace \textbullet \enspace \emph{#2}\par}}%
+
+
+% Print the Glossary -------------------------------------------------
+\newcommand{\englatglossary}{%
+%  \IfFileExists{\jobname.raw}{%
+%   \immediate\write18{sort -u \jobname.raw > \jobname.e2l}% <-- this trucates file ..?
+    \chapter{English--Latin Glossary}
+    \parindent 0pt
+    {%
+      \elglossaryfont
+      NB: This feature is experimental and probably still buggy\ldots
+      %
+    }%
+    \begin{multicols}{2}
+      \input{\jobname.e2l}
+    \end{multicols}
+  % }%
+  % {\relax}
+}
+% usage: \englatglossary
+
+\newcommand{\elglossaryfont}{\sffamily}
+
+
+
+
+% Terminology ========================================================
 
 \l@term{commissarius}{commissioner}
 \l@term{concedere}{grant}
 \l@term{concederi}[concedere]{granted}[grant]
-\l@term{concessum}[grant]{granted}[grant]
+\l@term{concessum}[concedere]{granted}[grant]% <-- participle; what about noun?
 \l@term{consulatum}{consulship}
 \l@term{curatio}{commission}
 \l@term{curationes}[curatio]{commissions}[commission]
@@ -71,7 +200,7 @@
 \l@term{magistratus}{magistrate}
 \l@term{magistratuspl}[magistratus]{magistrates}[magistrate]
 \l@term{maiestas}{majesty}
-\l@term{Maiestas}{Majesty}
+\l@term{Maiestas}[maiestas]{Majesty}[majesty]
 \l@term{plebs}{people (\emph{plebs})}
 \l@term{populus}{people}
 \l@term{potestas}{power}
@@ -86,7 +215,9 @@
 \l@term{tyrannis}{tyranny}
 
 
-% compound terms -----------------------------------------------------
+% Compound Terms =====================================================
+% needs to be indexed, etc....
+
 \NewDocumentCommand{\l@cterm} {mm}
 {%
    \expandafter\def\csname#1\endcsname{%
