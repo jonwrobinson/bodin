@@ -79,4 +79,27 @@
 %\newcommand*{\pgformat}[1]{\textsc{\textbf{#1}}}
 
 
+% Paragraph numbers ==================================================
+
+\newcounter{paranum}
+\setcounter{paranum}{0}
+\counterwithin{paranum}{chapter}
+\newcommand{\parnum}{[\arabic{paranum}]}
+
+
+\strictpagecheck
+
+\newcommand{\pnum}{%
+  \par
+  \refstepcounter{paranum}%
+  \sidepar{%
+    \textcolor{darkgray}{\parnum}}%
+}
+
+\renewcommand{\theparanum}{\thechapter.\arabic{paranum}}
+
+% use paragraph numbers in index instead of page numbers? (untested)
+\AtBeginDocument{\xpatchcmd{\@wrindex}{\thepage}{\theparanum}{}{}}
+
+
 \endinput

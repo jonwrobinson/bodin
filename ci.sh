@@ -1,4 +1,7 @@
 !/bin/bash
+
+BASE=bodin_de-republica_1c08
+
 echo "Checking in..."
 
 git add .
@@ -10,13 +13,15 @@ else
  git commit -a -m "$1"
 fi
 
-git checkout bodin_de-republica_1c08.pdf
+git checkout $BASE.pdf
 
-xelatex bodin_de-republica_1c08.tex
+sort -u $BASE.raw > $BASE.e2l
+
+xelatex $BASE.tex
 
 git add .
 
-git commit  bodin_de-republica_1c08.pdf
+git commit  $BASE.pdf
 
 git push origin master
 

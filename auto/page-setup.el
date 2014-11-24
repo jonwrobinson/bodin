@@ -5,6 +5,8 @@
      '("mpfont" 1)
      "thedocauthor"
      "thedoctitle"
+     "parnum"
+     "pnum"
      "secheads"
      "footnoterule")))
 
