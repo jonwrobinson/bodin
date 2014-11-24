@@ -2,15 +2,15 @@ majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
-Republic\kern .5em \textbullet \kern .5em \emph  {Respublica}\par 
-Republic\kern .5em \textbullet \kern .5em \emph  {Respublica}\par 
+republic\kern .5em \textbullet \kern .5em \emph  {respublica}\par 
+republic\kern .5em \textbullet \kern .5em \emph  {respublica}\par 
 guiding\kern .5em \textbullet \kern .5em \emph  {gubernatio}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 prince\kern .5em \textbullet \kern .5em \emph  {princeps}\par 
-guardians\kern .5em \textbullet \kern .5em \emph  {custodes}\par 
+guardian\kern .5em \textbullet \kern .5em \emph  {custos}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 \emph  {imperium}\kern .5em \textbullet \kern .5em \emph  {imperium}\par 
 prince\kern .5em \textbullet \kern .5em \emph  {princeps}\par 
@@ -35,7 +35,7 @@ right\kern .5em \textbullet \kern .5em \emph  {ius}\par
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
-grant\kern .5em \textbullet \kern .5em \emph  {grant}\par 
+grant\kern .5em \textbullet \kern .5em \emph  {concedere}\par 
 right\kern .5em \textbullet \kern .5em \emph  {ius}\par 
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
 dictator\kern .5em \textbullet \kern .5em \emph  {dictator}\par 
@@ -50,7 +50,7 @@ right\kern .5em \textbullet \kern .5em \emph  {ius}\par
 law\kern .5em \textbullet \kern .5em \emph  {lex}\par 
 magistrate\kern .5em \textbullet \kern .5em \emph  {magistratus}\par 
 people (\emph  {plebs})\kern .5em \textbullet \kern .5em \emph  {plebs}\par 
-guardians\kern .5em \textbullet \kern .5em \emph  {custodes}\par 
+guardian\kern .5em \textbullet \kern .5em \emph  {custos}\par 
 dictator\kern .5em \textbullet \kern .5em \emph  {dictator}\par 
 right\kern .5em \textbullet \kern .5em \emph  {ius}\par 
 dictator\kern .5em \textbullet \kern .5em \emph  {dictator}\par 
@@ -112,8 +112,8 @@ people\kern .5em \textbullet \kern .5em \emph  {populus}\par
 right\kern .5em \textbullet \kern .5em \emph  {ius}\par 
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
-dictator\kern .5em \textbullet \kern .5em \emph  {dictator}\par 
 majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
+dictator\kern .5em \textbullet \kern .5em \emph  {dictator}\par 
 \emph  {imperium}\kern .5em \textbullet \kern .5em \emph  {imperium}\par 
 people\kern .5em \textbullet \kern .5em \emph  {populus}\par 
 power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
@@ -138,3 +138,31 @@ republic\kern .5em \textbullet \kern .5em \emph  {respublica}\par
 supervisor\kern .5em \textbullet \kern .5em \emph  {curator}\par 
 procurator\kern .5em \textbullet \kern .5em \emph  {procurator}\par 
 people\kern .5em \textbullet \kern .5em \emph  {populus}\par 
+power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
+law\kern .5em \textbullet \kern .5em \emph  {lex}\par 
+majesty\kern .5em \textbullet \kern .5em \emph  {maiestas}\par 
+\emph  {imperium}\kern .5em \textbullet \kern .5em \emph  {imperium}\par 
+\emph  {imperium}\kern .5em \textbullet \kern .5em \emph  {imperium}\par 
+people\kern .5em \textbullet \kern .5em \emph  {populus}\par 
+magistrate\kern .5em \textbullet \kern .5em \emph  {magistratus}\par 
+power\kern .5em \textbullet \kern .5em \emph  {potestas}\par 
+prince\kern .5em \textbullet \kern .5em \emph  {princeps}\par 
+lord\kern .5em \textbullet \kern .5em \emph  {dominus}\par 
+proprietor\kern .5em \textbullet \kern .5em \emph  {proprietarius}\par 
+\emph  {imperium}\kern .5em \textbullet \kern .5em \emph  {imperium}\par 
+\emph  {imperium}\kern .5em \textbullet \kern .5em \emph  {imperium}\par 
+lord\kern .5em \textbullet \kern .5em \emph  {dominus}\par 
+guardian\kern .5em \textbullet \kern .5em \emph  {custos}\par 
+regent\kern .5em \textbullet \kern .5em \emph  {regens}\par 
+kingdom\kern .5em \textbullet \kern .5em \emph  {regnum}\par 
+king\kern .5em \textbullet \kern .5em \emph  {rex}\par 
+law\kern .5em \textbullet \kern .5em \emph  {lex}\par 
+law\kern .5em \textbullet \kern .5em \emph  {lex}\par 
+king\kern .5em \textbullet \kern .5em \emph  {rex}\par 
+royal\kern .5em \textbullet \kern .5em \emph  {regius}\par 
+king\kern .5em \textbullet \kern .5em \emph  {rex}\par 
+law\kern .5em \textbullet \kern .5em \emph  {lex}\par 
+mandate\kern .5em \textbullet \kern .5em \emph  {mandatum}\par 
+procurator\kern .5em \textbullet \kern .5em \emph  {procurator}\par 
+lord\kern .5em \textbullet \kern .5em \emph  {dominus}\par 
+lord\kern .5em \textbullet \kern .5em \emph  {dominus}\par 
